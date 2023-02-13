@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.scss';
 import classNames from 'classnames';
+import { evaluate } from 'mathjs'
 
 const buttons = [
   { text: '*', id: 'multiply' },
@@ -52,15 +53,15 @@ function App() {
 
     // handles '=' press
     if (value === '=') {
-      // removes operators from the end - eval() needs it to work
+      // removes operators from the end
       if (operators.includes(lastInFormula)) {
-        setInput(eval(formula.slice(0, -1)).toString());
+        setInput(evaluate(formula.slice(0, -1)).toString());
         setHasResult(true);
 
         return;
       }
 
-      setInput(eval(formula).toString());
+      setInput(evaluate(formula).toString());
       setHasResult(true);
 
       return;
@@ -140,7 +141,7 @@ function App() {
       return 0;
     }
 
-    if (input.length > 1 && operators.includes(input[0])) {
+    if (input.length > 1 && '+/*'.includes(input[0])) {
       return input.slice(1);
     }
 
